@@ -2,3 +2,32 @@ h1 {
   border: 5px solid blue; }
   h1.red {
     color: red; }
+
+body, html {
+  font-family: 'Cardo', serif; }
+
+#content {
+  text-align: center; }
+
+input {
+  width: 300px; }
+
+img {
+  max-height: 500px; }
+
+#results {
+  display: flex;
+  flex-wrap: wrap; }
+  #results .thumbnail {
+    padding: 20px;
+    margin: 10px 10px;
+    font-weight: 700;
+    font-size: 20px; }
+    #results .thumbnail .thumb-button {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      margin-left: -43px; }
+
+#previous .hidden, #next .hidden {
+  display: none; }
