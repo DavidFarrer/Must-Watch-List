@@ -8,6 +8,8 @@ var maxPageVisited;
 var maxPage;
 var nextButton = document.querySelector("#next");
 var previousButton = document.querySelector("#previous");
+var currentMovie;
+var matches = document.body.matchesSelector || document.body.webkitMatchesSelector || document.body.mozMatchesSelector || document.body.msMatchesSelector || document.body.webkitMatchesSelector || document.body.matchesSelector;
 
 searchButton.addEventListener("click", function(e) {
 	e.preventDefault();
@@ -73,6 +75,7 @@ function displayResults(resultsObj) {
 		var newDiv = document.createElement("div");
 		var imgNode = document.createElement("img");
 		var moreInfo = document.createElement("a");
+		moreInfo.dataset.index = index;
 		moreInfo.classList.add("btn", "btn-info", "thumb-button");
 		moreInfo.href = "#";
 		moreInfo.dataset.toggle = "modal";
@@ -124,3 +127,17 @@ function hideButtons() {
 	previousButton.classList.add("hidden");
 	nextButton.classList.add("hidden");
 }
+
+results.addEventListener("click", function(e) {
+	if (e.target.classList.contains("thumb-button")) {
+		// e.stopPropagation();
+		var indexOfMovie = ((currentPage - 1) * 10) + +e.target.dataset.index;
+		console.log(indexOfMovie);
+		document.querySelector("#modalLabel").textContent = searchResults[indexOfMovie].title;
+		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid).then(function(res) {
+			return res.json();
+		}).then(function(resp) {
+			console.log(resp);
+		});
+	}
+});
