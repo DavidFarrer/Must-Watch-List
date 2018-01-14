@@ -40,7 +40,7 @@ router.get("/movie", function(req, res) {
 	imdb.getById(req.query.id, {apiKey: config.imdbKey, timeout: 30000}).then(movie => {
 		res.send(movie);
 	}).catch(err => {
-		console.log(err);
+		res.send(err);
 	});
 
 });

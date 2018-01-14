@@ -84,9 +84,9 @@ function displayResults(resultsObj) {
 		imgNode.classList.add("img-responsive");
 		imgNode.src = movie.poster;
 		imgNode.alt = "Image not Available";
-		newDiv.classList.add("thumbnail", "col-md-2");
+		newDiv.classList.add("thumbnail", "col-md-2", "col-xs-5");
 		if (index % 5 === 0) {
-			newDiv.classList.add("col-md-offset-1");
+			newDiv.classList.add("col-xs-offset-1");
 		}
 		var newContent = document.createElement("p");
 		newContent.textContent = movie.title + ", " + movie.year;
@@ -132,12 +132,24 @@ results.addEventListener("click", function(e) {
 	if (e.target.classList.contains("thumb-button")) {
 		// e.stopPropagation();
 		var indexOfMovie = ((currentPage - 1) * 10) + +e.target.dataset.index;
+		var selectedMedia = searchResults[indexOfMovie];
+		var modalImage = document.querySelector(".modal-image");
+		modalImage.src = selectedMedia.poster;
+		modalImage.alt = "Image not available";
 		console.log(indexOfMovie);
-		document.querySelector("#modalLabel").textContent = searchResults[indexOfMovie].title;
+		document.querySelector("#modalLabel").textContent = selectedMedia.title;
 		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid).then(function(res) {
 			return res.json();
 		}).then(function(resp) {
-			console.log(resp);
+			var modalDescription = document.querySelector(".description");
+			var addButton = document.querySelector("#add-button");
+			if (resp.message) {
+				modalDescription.textContent = "Games are not \"must watch\". Please search for TV Shows or Movies.";
+				addButton.classList.add("hidden");
+			} else {
+				modalDescription.textContent = "MOVIE!";
+				addButton.classList.remove("hidden");			
+			}
 		});
 	}
 });

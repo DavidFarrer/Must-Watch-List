@@ -1,3 +1,9 @@
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
 h1 {
   border: 5px solid blue; }
   h1.red {
@@ -29,5 +35,5 @@ img {
       left: 50%;
       margin-left: -43px; }
 
-#previous .hidden, #next .hidden {
+.hidden {
   display: none; }
