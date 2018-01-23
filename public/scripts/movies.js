@@ -10,6 +10,11 @@ var nextButton = document.querySelector("#next");
 var previousButton = document.querySelector("#previous");
 var currentMovie;
 var matches = document.body.matchesSelector || document.body.webkitMatchesSelector || document.body.mozMatchesSelector || document.body.msMatchesSelector || document.body.webkitMatchesSelector || document.body.matchesSelector;
+var yearField = document.querySelector(".year");
+var imdbRatingField = document.querySelector(".rating");
+var starringField = document.querySelector(".starring");
+var errorField = document.querySelector(".error");
+var movieInfoSection = document.querySelector("#movieInfo");
 
 searchButton.addEventListener("click", function(e) {
 	e.preventDefault();
@@ -144,10 +149,16 @@ results.addEventListener("click", function(e) {
 			var modalDescription = document.querySelector(".description");
 			var addButton = document.querySelector("#add-button");
 			if (resp.message) {
-				modalDescription.textContent = "Games are not \"must watch\". Please search for TV Shows or Movies.";
+				errorField.classList.remove("hidden");
+				movieInfoSection.classList.add("hidden");
 				addButton.classList.add("hidden");
 			} else {
-				modalDescription.textContent = "MOVIE!";
+				errorField.classList.add("hidden");
+				movieInfoSection.classList.remove("hidden");
+				yearField.textContent = resp.year;
+				imdbRatingField.textContent = "IMDB: " + resp.rating + " / 10";
+				starringField.textContent = "Actors: " + resp.actors;				
+				console.log(resp);
 				addButton.classList.remove("hidden");			
 			}
 		});

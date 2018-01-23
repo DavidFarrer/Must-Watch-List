@@ -35,5 +35,11 @@ img {
       left: 50%;
       margin-left: -43px; }
 
+.modal .modal-description {
+  text-align: left; }
+  .modal .modal-description .year {
+    font-size: 1.4em;
+    font-weight: bold; }
+
 .hidden {
   display: none; }
