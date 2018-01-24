@@ -15,6 +15,9 @@ var imdbRatingField = document.querySelector(".rating");
 var starringField = document.querySelector(".starring");
 var errorField = document.querySelector(".error");
 var movieInfoSection = document.querySelector("#movieInfo");
+var directorField = document.querySelector(".director");
+var plotField = document.querySelector(".plot");
+var imdbLinkField = document.querySelector(".imdbLink");
 
 searchButton.addEventListener("click", function(e) {
 	e.preventDefault();
@@ -55,13 +58,15 @@ nextButton.addEventListener("click", function(e) {
 		}).then(function(resp) {
 			pushMovies(resp.results);	
 			displayResults(resp.results);
+			displayProperButtons();
 		});
 	} else {
 		console.log("BEEN HERE!");
 		var firstIndex = (currentPage - 1) * 10;
 		displayResults(searchResults.slice(firstIndex, firstIndex + 10));
+		displayProperButtons();
 	}
-	displayProperButtons();
+	
 });
 
 previousButton.addEventListener("click", function(e) {
@@ -87,7 +92,9 @@ function displayResults(resultsObj) {
 		moreInfo.dataset.target = "#largeModal";
 		moreInfo.textContent = "More Info";
 		imgNode.classList.add("img-responsive");
-		imgNode.src = movie.poster;
+		if (movie.poster != "N/A") {
+			imgNode.src = movie.poster;
+		}
 		imgNode.alt = "Image not Available";
 		newDiv.classList.add("thumbnail", "col-md-2", "col-xs-5");
 		if (index % 5 === 0) {
@@ -135,11 +142,14 @@ function hideButtons() {
 
 results.addEventListener("click", function(e) {
 	if (e.target.classList.contains("thumb-button")) {
-		// e.stopPropagation();
 		var indexOfMovie = ((currentPage - 1) * 10) + +e.target.dataset.index;
 		var selectedMedia = searchResults[indexOfMovie];
 		var modalImage = document.querySelector(".modal-image");
-		modalImage.src = selectedMedia.poster;
+		if (selectedMedia.poster != "N/A") {
+			modalImage.src = selectedMedia.poster;
+		} else {
+			modalImage.src = "";
+		}
 		modalImage.alt = "Image not available";
 		console.log(indexOfMovie);
 		document.querySelector("#modalLabel").textContent = selectedMedia.title;
@@ -156,8 +166,11 @@ results.addEventListener("click", function(e) {
 				errorField.classList.add("hidden");
 				movieInfoSection.classList.remove("hidden");
 				yearField.textContent = resp.year;
-				imdbRatingField.textContent = "IMDB: " + resp.rating + " / 10";
-				starringField.textContent = "Actors: " + resp.actors;				
+				imdbRatingField.textContent = resp.rating + " / 10";
+				starringField.textContent = resp.actors;
+				directorField.textContent = resp.director;
+				plotField.textContent = resp.plot;
+				imdbLinkField.setAttribute("href", resp.imdburl);				
 				console.log(resp);
 				addButton.classList.remove("hidden");			
 			}

@@ -40,6 +40,11 @@ img {
   .modal .modal-description .year {
     font-size: 1.4em;
     font-weight: bold; }
+  .modal .modal-description #movieInfo p {
+    font-weight: bold;
+    font-size: 1.3em; }
+    .modal .modal-description #movieInfo p span {
+      font-weight: normal; }
 
 .hidden {
   display: none; }
