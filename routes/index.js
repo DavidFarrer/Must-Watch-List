@@ -45,4 +45,8 @@ router.get("/movie", function(req, res) {
 
 });
 
+router.get("/mymovies", function(req, res) {
+	res.send("HI");
+});
+
 module.exports = router;
