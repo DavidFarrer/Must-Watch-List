@@ -4,32 +4,36 @@ html {
 *, *:before, *:after {
   box-sizing: inherit; }
 
-body {
-  padding-top: 60px; }
-
 .container {
   background-color: #e8e8e8;
-  min-height: 100vh; }
+  min-height: 100vh;
+  padding-top: 60px; }
 
 nav {
-  background-color: #333333; }
+  background-color: #054566; }
   nav .navbar-brand {
     width: 300px; }
   nav .navbar-brand {
-    font-size: 2em; }
+    font-size: 2.3em;
+    color: #E3B231;
+    font-weight: 700;
+    text-shadow: 2px 2px 2px #A12400; }
   nav ul {
     padding: 0;
     margin: 0; }
   nav li {
     margin: 0;
-    padding: 0;
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.01); }
+    padding: 0; }
+    nav li a {
+      color: #E3B231;
+      text-shadow: 2px 2px 2px #A12400; }
     nav li.links-transparent {
-      color: #5697ff;
-      font-size: 1.4em;
+      font-size: 1.1em;
       font-weight: bold; }
       nav li.links-transparent a:hover {
-        background-color: #fffee5; }
+        background-color: #E3B231;
+        text-shadow: none;
+        color: #054566; }
 
 body, html {
   font-family: 'Cardo', serif; }
@@ -46,21 +50,31 @@ img {
 #results {
   display: flex;
   flex-wrap: wrap; }
+  #results .box {
+    padding: 0;
+    margin-top: 8px; }
   #results .thumbnail {
-    padding: 20px;
+    padding: 10px;
     padding-bottom: 50px;
-    margin: 10px 10px;
+    margin: 4px;
     font-weight: 700;
     font-size: 20px;
     background-color: #fffef7;
-    border-color: #333333; }
+    border: none;
+    height: 100%; }
     #results .thumbnail p.caption {
       color: #333333; }
     #results .thumbnail .thumb-button {
       position: absolute;
       bottom: 10px;
       left: 50%;
-      margin-left: -43px; }
+      margin-left: -43px;
+      background-color: #054566;
+      border: none; }
+
+.modal .btn-primary {
+  background-color: #054566;
+  border: none; }
 
 .modal .modal-description {
   text-align: left; }
@@ -72,6 +86,11 @@ img {
     font-size: 1.3em; }
     .modal .modal-description #movieInfo p span {
       font-weight: normal; }
+
+#previous, #next {
+  margin: 10px;
+  background-color: #B3000F;
+  border: none; }
 
 .hidden {
   display: none; }

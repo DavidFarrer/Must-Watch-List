@@ -82,7 +82,8 @@ previousButton.addEventListener("click", function(e) {
 function displayResults(resultsObj) {
 	console.log(resultsObj);
 	resultsObj.forEach(function(movie, index) {
-		var newDiv = document.createElement("div");
+		var boxDiv = document.createElement("div");
+		var innerDiv = document.createElement("div");
 		var imgNode = document.createElement("img");
 		var moreInfo = document.createElement("a");
 		moreInfo.dataset.index = index;
@@ -96,18 +97,26 @@ function displayResults(resultsObj) {
 			imgNode.src = movie.poster;
 		}
 		imgNode.alt = "Image not Available";
-		newDiv.classList.add("thumbnail", "col-md-2", "col-xs-5");
+		boxDiv.classList.add("col-md-2", "col-xs-5", "box");
 		if (index % 5 === 0) {
-			newDiv.classList.add("col-xs-offset-1");
+			boxDiv.classList.add("col-md-offset-1");
 		}
+		if (index % 2 === 0) {
+			boxDiv.classList.add("col-xs-offset-1");
+			if (index !== 0) {
+				boxDiv.classList.add("col-md-offset-0");
+			}
+		}
+		innerDiv.classList.add("thumbnail");
 		var newContent = document.createElement("p");
 		newContent.textContent = movie.title + ", " + movie.year;
 		newContent.classList.add("caption");
-		newDiv.appendChild(imgNode);
-		newDiv.appendChild(newContent);
-		newDiv.appendChild(moreInfo);
+		innerDiv.appendChild(imgNode);
+		innerDiv.appendChild(newContent);
+		innerDiv.appendChild(moreInfo);
+		boxDiv.appendChild(innerDiv);
 		
-		results.appendChild(newDiv);
+		results.appendChild(boxDiv);
 	});
 }
 
