@@ -3,8 +3,6 @@ var bcrypt = require("bcryptjs");
 
 mongoose.connect("mongodb://localhost/mustwatch");
 
-var db = mongoose.connection;
-
 // User Schema
 var UserSchema = mongoose.Schema({
 	email: {

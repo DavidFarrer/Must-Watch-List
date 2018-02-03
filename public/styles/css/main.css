@@ -10,7 +10,8 @@ html {
   padding-top: 60px; }
 
 nav {
-  background-color: #054566; }
+  background-color: #054566;
+  text-align: left; }
   nav .navbar-brand {
     width: 300px; }
   nav .navbar-brand {
