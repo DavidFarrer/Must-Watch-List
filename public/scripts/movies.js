@@ -1,4 +1,4 @@
-var searchButton = document.querySelector("button");
+var searchButton = document.querySelector("#searchButton");
 var searchField = document.querySelector("input");
 var results = document.querySelector("#results");
 var searchResults = [];

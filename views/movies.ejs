@@ -8,9 +8,10 @@
 </head>
 	<body>
 		<div id="content" class="container">
+		<% include partials/header %>
 			<h2>Search for a Movie/TV Show!!</h2>
 			<input type="search" name="show" placeholder="Movie/TV Show">
-			<button>Search!</button>
+			<button id="searchButton">Search!</button>
 
 			<section id="results" class="row text-center"></section>
 			<div id="previous" class="btn btn-primary hidden">Previous 10</div><div id="next" class="btn btn-primary hidden">Next 10</div>
