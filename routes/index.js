@@ -10,7 +10,7 @@ router.get("/", function(req, res) {
 });
 
 router.get("/movies", function(req, res) {
-	
+	console.log(res.locals.user);
 	res.render("movies");
 });
 

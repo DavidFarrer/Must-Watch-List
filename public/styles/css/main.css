@@ -35,6 +35,16 @@ nav {
         background-color: #E3B231;
         text-shadow: none;
         color: #054566; }
+    nav li.logged-in-as {
+      text-align: center;
+      margin: 5px; }
+      nav li.logged-in-as p {
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: 0;
+        color: white; }
 
 body, html {
   font-family: 'Cardo', serif; }
