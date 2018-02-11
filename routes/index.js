@@ -2,7 +2,12 @@ var express = require("express");
 var router = express.Router();
 var imdb = require("imdb-api");
 var config = require("../config");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
 var currentSearch;
+
+var User = require("../models/user");
+var Movie = require("../models/movie");
 
 
 router.get("/", function(req, res) {
@@ -46,15 +51,62 @@ router.get("/movie", function(req, res) {
 });
 
 router.get("/mylist", ensureAuthenticated, function(req, res) {
+	console.log(req.user);
 	res.render("personallist");
+});
+
+router.post("/mylist", ensureAuthenticated, function(req, res) {
+	console.log("we made it here");
+	var imdbid = req.body.imdbid;
+
+	Movie.count({imdbid: imdbid}, function(err, count) {
+		if (count > 0) {
+			Movie.findOne({imdbid: req.body.imdbid}, function(err, movie) {
+				movie.timesAdded++;
+				movie.save();
+			});
+		} else {
+			var title = req.body.title;
+			var imdbid = req.body.imdbid;
+			var year = req.body.year;
+			var rating = req.body.rating;
+			var actors = req.body.actors;
+			var director = req.body.director;
+			var plot = req.body.plot;
+			var imdburl = req.body.imdburl;
+
+			var newMovie = new Movie({
+				title: title,
+				imdbid: imdbid,
+				year: year,
+				rating: rating,
+				actors: actors,
+				director: director,
+				plot: plot,
+				imdburl: imdburl
+			});
+
+			Movie.createMovie(newMovie, function(err, movie) {
+				if (err) {
+					throw err;
+				}
+				console.log(movie);
+			});
+		}
+	});		
+	// res.locals.user.watchList.push(req.body);
+	// res.locals.user.save();
+	res.sendStatus(201);
 });
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
+		console.log(req.user);
 		return next();
 	} else {
+		console.log("didnt make it");
 		req.flash("error_msg", "You must log in first");
-		res.redirect("/users/login");
+		res.send({redirect: "/users/login"});
 	}
 }
 

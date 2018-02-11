@@ -15,7 +15,17 @@ var UserSchema = mongoose.Schema({
 	},
 	password: {
 		type: String
-	}
+	},
+	watchList: [
+		{
+			objectId: mongoose.Schema.Types.ObjectId,
+			imdbId: String,
+			watched: {
+				type: Boolean,
+				default: false
+			}		
+		}
+	]
 });
 
 var User = module.exports = mongoose.model("User", UserSchema);
@@ -45,4 +55,9 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 		}
 		callback(null, isMatch);
 	});
+};
+
+module.exports.addMovie = function(user, movie, callback) {
+	
+
 };

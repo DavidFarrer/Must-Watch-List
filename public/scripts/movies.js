@@ -18,6 +18,7 @@ var movieInfoSection = document.querySelector("#movieInfo");
 var directorField = document.querySelector(".director");
 var plotField = document.querySelector(".plot");
 var imdbLinkField = document.querySelector(".imdbLink");
+var currentSelected;
 
 searchButton.addEventListener("click", function(e) {
 	e.preventDefault();
@@ -160,9 +161,9 @@ results.addEventListener("click", function(e) {
 			modalImage.src = "";
 		}
 		modalImage.alt = "Image not available";
-		console.log(indexOfMovie);
 		document.querySelector("#modalLabel").textContent = selectedMedia.title;
 		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid).then(function(res) {
+			console.log(res);
 			return res.json();
 		}).then(function(resp) {
 			var modalDescription = document.querySelector(".description");
@@ -172,6 +173,7 @@ results.addEventListener("click", function(e) {
 				movieInfoSection.classList.add("hidden");
 				addButton.classList.add("hidden");
 			} else {
+				currentSelected = resp;
 				errorField.classList.add("hidden");
 				movieInfoSection.classList.remove("hidden");
 				yearField.textContent = resp.year;
@@ -185,4 +187,34 @@ results.addEventListener("click", function(e) {
 			}
 		});
 	}
+});
+
+document.querySelector("#add-button").addEventListener("click", function() {
+	fetch("/mylist", {
+		method: "POST",
+		credentials: "include",
+		body: JSON.stringify(currentSelected),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	.then(function(response) {
+		if (response.status >= 200 && response.status < 300) {
+			if (response.status === 201) {
+				return response;
+			} else {
+				return response.json();
+			}
+		} else {
+			var error = new Error(response.statusText);
+			error.response = response;
+			throw error;
+		}
+	})
+	.then(function(res) {
+		if (typeof res.redirect === "string") {
+			window.location = res.redirect;
+		}
+		console.log(res);
+	});
 });
