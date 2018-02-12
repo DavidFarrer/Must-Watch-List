@@ -75,3 +75,16 @@ module.exports.addMovie = function(username, movie, callback) {
 	});
 
 };
+
+module.exports.hasMovie = function(user, movie) {
+	var found = false;
+	user.watchList.forEach(function(listMovie) {
+		if (listMovie.imdbId === movie.imdbid) {
+			found = true;
+		}
+	});
+	if (found) {
+		return true;
+	}
+	return false;
+};

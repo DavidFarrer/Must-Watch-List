@@ -26,7 +26,6 @@ router.get("/searching", function(req, res) {
 		apiKey: config.imdbKey,
 		timeout: 30000
 	}).then(movie => {
-		console.log(movie);
 		currentSearch = movie;
 		res.send(movie);
 	}).catch(err => {
@@ -43,8 +42,18 @@ router.get("/nextpage", function(req, res) {
 
 router.get("/movie", function(req, res) {
 	imdb.getById(req.query.id, {apiKey: config.imdbKey, timeout: 30000}).then(movie => {
+		console.log(req.user);
+		if (req.user) {
+			console.log("I LOVE IT I LOVE IT I LOVE IT");
+		}
+		if (req.user && User.hasMovie(req.user, movie)) {
+			movie.onList = true;
+		} else {
+			movie.onList = false;
+		}
 		res.send(movie);
 	}).catch(err => {
+		console.log(err);
 		res.send(err);
 	});
 

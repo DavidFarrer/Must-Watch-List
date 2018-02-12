@@ -157,6 +157,7 @@ results.addEventListener("click", function(e) {
 		var indexOfMovie = ((currentPage - 1) * 10) + +e.target.dataset.index;
 		var selectedMedia = searchResults[indexOfMovie];
 		var modalImage = document.querySelector(".modal-image");
+
 		if (selectedMedia.poster != "N/A") {
 			modalImage.src = selectedMedia.poster;
 		} else {
@@ -164,28 +165,35 @@ results.addEventListener("click", function(e) {
 		}
 		modalImage.alt = "Image not available";
 		document.querySelector("#modalLabel").textContent = selectedMedia.title;
-		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid).then(function(res) {
+		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid, {
+			credentials: "include"
+		}).then(function(res) {
 			console.log(res);
 			return res.json();
 		}).then(function(resp) {
 			var modalDescription = document.querySelector(".description");
-			var addButton = document.querySelector("#add-button");
 			if (resp.message) {
 				errorField.classList.remove("hidden");
 				movieInfoSection.classList.add("hidden");
 				addButton.classList.add("hidden");
 			} else {
 				currentSelected = resp;
+				console.log(currentSelected);
 				errorField.classList.add("hidden");
 				movieInfoSection.classList.remove("hidden");
-				yearField.textContent = resp.year;
-				imdbRatingField.textContent = resp.rating + " / 10";
-				starringField.textContent = resp.actors;
-				directorField.textContent = resp.director;
-				plotField.textContent = resp.plot;
-				imdbLinkField.setAttribute("href", resp.imdburl);				
-				console.log(resp);
-				addButton.classList.remove("hidden");			
+				yearField.textContent = currentSelected.year;
+				imdbRatingField.textContent = currentSelected.rating + " / 10";
+				starringField.textContent = currentSelected.actors;
+				directorField.textContent = currentSelected.director;
+				plotField.textContent = currentSelected.plot;
+				imdbLinkField.setAttribute("href", currentSelected.imdburl);
+				if (currentSelected.onList) {
+					addButton.classList.add("hidden");
+					addedButton.classList.remove("hidden");
+				} else {
+					addButton.classList.remove("hidden");			
+					addedButton.classList.add("hidden");
+				}				
 			}
 		});
 	}
