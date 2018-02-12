@@ -18,7 +18,10 @@ var UserSchema = mongoose.Schema({
 	},
 	watchList: [
 		{
-			objectId: mongoose.Schema.Types.ObjectId,
+			objectId: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Movie"
+			},
 			imdbId: String,
 			watched: {
 				type: Boolean,
@@ -57,7 +60,18 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 	});
 };
 
-module.exports.addMovie = function(user, movie, callback) {
-	
+module.exports.addMovie = function(username, movie, callback) {
+	var query = {username: username};
+	User.findOne(query, function(err, user) {
+		if (err) {
+			throw err;
+		} else {
+			user.watchList.push({
+				objectId: movie._id,
+				imdbId: movie.imdbid
+			});
+			user.save(callback);
+		}
+	});
 
 };

@@ -26,3 +26,10 @@ var Movie = module.exports = mongoose.model("Movie", MovieSchema);
 module.exports.createMovie = function(newMovie, callback) {
 	newMovie.save(callback); 
 };
+
+module.exports.incrementTimesWatched = function(imdbid, callback) {
+	Movie.findOne({imdbid: imdbid}, function(err, movie) {
+		movie.timesAdded++;
+		movie.save(callback);
+	});
+};

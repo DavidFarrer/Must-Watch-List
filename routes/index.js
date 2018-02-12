@@ -61,9 +61,14 @@ router.post("/mylist", ensureAuthenticated, function(req, res) {
 
 	Movie.count({imdbid: imdbid}, function(err, count) {
 		if (count > 0) {
-			Movie.findOne({imdbid: req.body.imdbid}, function(err, movie) {
-				movie.timesAdded++;
-				movie.save();
+			Movie.incrementTimesWatched(req.body.imdbid, function(err, movie) {
+				User.addMovie(req.user.username, movie, function(err, user) {
+					if (err) {
+						throw err;
+					} else {
+						console.log(user);
+					}
+				});
 			});
 		} else {
 			var title = req.body.title;
@@ -90,7 +95,13 @@ router.post("/mylist", ensureAuthenticated, function(req, res) {
 				if (err) {
 					throw err;
 				}
-				console.log(movie);
+				User.addMovie(req.user.username, movie, function(err, user) {
+					if (err) {
+						throw err;
+					} else {
+						console.log(user);
+					}
+				});
 			});
 		}
 	});		

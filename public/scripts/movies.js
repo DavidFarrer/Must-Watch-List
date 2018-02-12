@@ -18,6 +18,8 @@ var movieInfoSection = document.querySelector("#movieInfo");
 var directorField = document.querySelector(".director");
 var plotField = document.querySelector(".plot");
 var imdbLinkField = document.querySelector(".imdbLink");
+var addButton = document.querySelector("#add-button");
+var addedButton = document.querySelector("#already-added");
 var currentSelected;
 
 searchButton.addEventListener("click", function(e) {
@@ -189,7 +191,7 @@ results.addEventListener("click", function(e) {
 	}
 });
 
-document.querySelector("#add-button").addEventListener("click", function() {
+addButton.addEventListener("click", function() {
 	fetch("/mylist", {
 		method: "POST",
 		credentials: "include",
@@ -214,7 +216,11 @@ document.querySelector("#add-button").addEventListener("click", function() {
 	.then(function(res) {
 		if (typeof res.redirect === "string") {
 			window.location = res.redirect;
+		} else {
+			
+			addButton.classList.add("hidden");
+			addedButton.classList.remove("hidden");
 		}
-		console.log(res);
+
 	});
 });
