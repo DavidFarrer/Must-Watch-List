@@ -43,9 +43,6 @@ router.get("/nextpage", function(req, res) {
 router.get("/movie", function(req, res) {
 	imdb.getById(req.query.id, {apiKey: config.imdbKey, timeout: 30000}).then(movie => {
 		console.log(req.user);
-		if (req.user) {
-			console.log("I LOVE IT I LOVE IT I LOVE IT");
-		}
 		if (req.user && User.hasMovie(req.user, movie)) {
 			movie.onList = true;
 		} else {
@@ -59,12 +56,18 @@ router.get("/movie", function(req, res) {
 
 });
 
-router.get("/mylist", ensureAuthenticated, function(req, res) {
-	console.log(req.user);
-	res.render("personallist");
+router.get("/mylist", ensureAuthenticatedGetRoute, function(req, res) {
+	User.populateUserMovies(req.user, function(err, populatedUser) {
+		if (err) {
+			throw err;
+		} else {
+			sortMovies(populatedUser.watchList);
+			res.render("personallist", {movies: populatedUser.watchList});
+		}
+	});
 });
 
-router.post("/mylist", ensureAuthenticated, function(req, res) {
+router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 	console.log("we made it here");
 	var imdbid = req.body.imdbid;
 
@@ -119,15 +122,43 @@ router.post("/mylist", ensureAuthenticated, function(req, res) {
 	res.sendStatus(201);
 });
 
-function ensureAuthenticated(req, res, next) {
+router.get("/mylist/movies", ensureAuthenticatedGetRoute, function(req, res) {
+
+});
+
+function ensureAuthenticatedPostRoute(req, res, next) {
 	if (req.isAuthenticated()) {
 		console.log(req.user);
 		return next();
-	} else {
-		console.log("didnt make it");
-		req.flash("error_msg", "You must log in first");
-		res.send({redirect: "/users/login"});
 	}
+	console.log("didnt make it");
+	req.flash("error_msg", "You must log in first");
+	res.send({redirect: "/users/login"});
+	
+}
+
+function ensureAuthenticatedGetRoute(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	req.flash("error_msg", "You must log in first");
+	res.redirect("/users/login");
+
 }
 
 module.exports = router;
+
+function sortMovies(movies) {
+
+	movies.sort(compare);
+
+	function compare(a, b) {
+		if (a.movie.title < b.movie.title) {
+			return -1;
+		}
+		if (a.movie.title > b.movie.title) {
+			return 1;
+		}
+		return 0;
+	}
+}

@@ -200,7 +200,7 @@ results.addEventListener("click", function(e) {
 });
 
 addButton.addEventListener("click", function() {
-	fetch("/mylist", {
+	fetch("/movies", {
 		method: "POST",
 		credentials: "include",
 		body: JSON.stringify(currentSelected),

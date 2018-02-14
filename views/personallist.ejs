@@ -1,3 +1,31 @@
-<h1>Welcome <%= user.username %></h1>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Must-Watch List</title>
+	<link rel="stylesheet" type="text/css" href="/styles/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/styles/css/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Cardo:400,700" rel="stylesheet">
+</head>
+	<body>
+		<div id="personalContainer" class="container">
+			<% include partials/header %>
+			<h2>Welcome <%= user.username %></h2>
+			<h4>Your Must-Watch List:</h4>
+			<div id="refineMovies">
+				<button id="notWatched" data-name="notWatched" class="refineButton selected">Not Watched</button>
+				<button id="watched" data-name="watched" class="refineButton">Watched</button>
+				<button id="showAll" data-name="showAll" class="refineButton">All</button>
+			</div>
 
-<h4>You liked <%= user.watchList[0].title %></h4>
+			<div>
+				<% movies.forEach(function(movie) { %>
+					<div>
+						<p><%= movie.movie.title %></p>
+					</div>
+				<% }) %>
+			</div>
+		</div>
+
+		<script src="scripts/personallist.js"></script>
+	</body>
+</html>

@@ -105,3 +105,15 @@ img {
 
 .hidden {
   display: none; }
+
+#personalContainer {
+  text-align: center; }
+  #personalContainer .refineButton {
+    border: 2px solid transparent;
+    background-color: #054566;
+    color: white; }
+    #personalContainer .refineButton:hover {
+      border: 2px solid #E3B231; }
+    #personalContainer .refineButton.selected {
+      color: #E3B231;
+      border: 2px solid #E3B231; }

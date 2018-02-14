@@ -18,7 +18,7 @@ var UserSchema = mongoose.Schema({
 	},
 	watchList: [
 		{
-			objectId: {
+			movie: {
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "Movie"
 			},
@@ -67,7 +67,7 @@ module.exports.addMovie = function(username, movie, callback) {
 			throw err;
 		} else {
 			user.watchList.push({
-				objectId: movie._id,
+				movie: movie._id,
 				imdbId: movie.imdbid
 			});
 			user.save(callback);
@@ -87,4 +87,11 @@ module.exports.hasMovie = function(user, movie) {
 		return true;
 	}
 	return false;
+};
+
+module.exports.populateUserMovies = function(user, callback) {
+	User.findOne({username: user.username})
+	.populate("watchList.movie")
+	.exec(callback);
+
 };
