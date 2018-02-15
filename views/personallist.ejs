@@ -14,13 +14,15 @@
 			<div id="refineMovies">
 				<button id="notWatched" data-name="notWatched" class="refineButton selected">Not Watched</button>
 				<button id="watched" data-name="watched" class="refineButton">Watched</button>
-				<button id="showAll" data-name="showAll" class="refineButton">All</button>
+				<button id="showAll" data-name="showAll" class="refineButton">Show All</button>
 			</div>
 
-			<div>
+			<div id="personalResults">
 				<% movies.forEach(function(movie) { %>
-					<div>
-						<p><%= movie.movie.title %></p>
+					<div class="panel panel-<%= movie.watched %>">
+						<span><%= movie.movie.title %> (<%= movie.movie.year %>)</span>
+						<button class="btn pull-right">Delete</button>
+						<button class="btn pull-right">Toggle Watched</button>
 					</div>
 				<% }) %>
 			</div>

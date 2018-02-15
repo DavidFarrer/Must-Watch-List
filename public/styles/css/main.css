@@ -109,11 +109,36 @@ img {
 #personalContainer {
   text-align: center; }
   #personalContainer .refineButton {
-    border: 2px solid transparent;
-    background-color: #054566;
-    color: white; }
+    background-color: #e8e8e8;
+    color: black; }
     #personalContainer .refineButton:hover {
+      color: #E3B231;
+      background-color: #054566; }
+    #personalContainer .refineButton#notWatched {
       border: 2px solid #E3B231; }
+    #personalContainer .refineButton#watched {
+      border: 2px solid #b71b64; }
+    #personalContainer .refineButton#showAll {
+      border: 2px solid black; }
     #personalContainer .refineButton.selected {
       color: #E3B231;
+      background-color: #054566; }
+  #personalContainer #personalResults {
+    margin-top: 15px;
+    font-size: 2em;
+    text-align: left; }
+    #personalContainer #personalResults .panel {
+      height: 64px;
+      line-height: 64px;
+      width: 60%;
+      margin: 10px auto;
+      padding: 0 10px; }
+      #personalContainer #personalResults .panel .btn {
+        display: none;
+        vertical-align: middle; }
+      #personalContainer #personalResults .panel:hover .btn {
+        display: block; }
+    #personalContainer #personalResults .panel-false {
       border: 2px solid #E3B231; }
+    #personalContainer #personalResults span {
+      display: inline-block; }
