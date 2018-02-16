@@ -108,3 +108,27 @@ module.exports.toggleWatched = function(username, imdbid, callback) {
 		user.save(callback);
 	});
 };
+
+module.exports.removeMovie = function(username, imdbid, callback) {
+	User.findOne({username: username}, function(err, user) {
+		if (err) {
+			throw err;
+		}
+		console.log("bfore: " + user.watchList);
+		console.log(typeof imdbid);
+		console.log(imdbid);
+		console.log(removeObj(user.watchList, "imdbid", imdbid));
+		user.save(callback);
+	});
+
+	function removeObj(arr, attr, value) {
+		var i = arr.length;
+		while (i--) {
+			if (arr[i] && arguments.length > 2 && arr[i][attr] === value) {
+				console.log("removing");
+				arr.splice(i, 1);
+			}
+		}
+		return arr;
+	}
+};

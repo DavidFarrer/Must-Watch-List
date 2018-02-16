@@ -151,3 +151,5 @@ img {
         color: black; }
     #personalContainer #personalResults .panel-false {
       border: 2px solid #E3B231; }
+    #personalContainer #personalResults .panel-true {
+      border: 2px solid #054566; }

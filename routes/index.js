@@ -77,6 +77,14 @@ router.post("/mylist", ensureAuthenticatedPostRoute, function(req, res) {
 			}
 			res.sendStatus(201);	
 		});
+	} else if (req.body.request === "deleteMovie") {
+		var imdbid = req.body.imdbid;
+		User.removeMovie(req.user.username, imdbid, function(err, user) {
+			if (err) {
+				throw err;
+			}
+			res.sendStatus(201);
+		});
 	}
 
 });

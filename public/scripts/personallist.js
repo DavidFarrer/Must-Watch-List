@@ -31,13 +31,15 @@ refineButtons.forEach(function(button) {
 
 movieDivs.forEach(function(movieDiv) {
 	movieDiv.addEventListener("click", function(e) {
-		if (e.target.classList.contains("watched-icon")) {
+		var clickedMovieDiv = e.currentTarget;
+		if (e.target.classList.contains("watched-icon") && !e.target.classList.contains("disabled")) {
+			e.target.classList.add("disabled");
 			fetch("/mylist", {
 				method: "POST",
 				credentials: "include",
 				body: JSON.stringify(
 					{
-						imdbid: e.currentTarget.dataset.imdbid,
+						imdbid: clickedMovieDiv.dataset.imdbid,
 						request: "toggleWatched"
 					}
 				),
@@ -70,6 +72,46 @@ movieDivs.forEach(function(movieDiv) {
 						watchedIcon.classList.remove("fa-eye");
 						watchedIcon.classList.add("fa-eye-slash");
 					}
+					console.log(clickedMovieDiv.dataset.imdbid);
+					e.target.classList.remove("disabled");
+				}
+
+			});
+		} else if (e.target.classList.contains("delete-icon") && !e.target.classList.contains("disabled")) {
+			e.target.classList.add("disabled");
+			fetch("/mylist", {
+				method: "POST",
+				credentials: "include",
+				body: JSON.stringify(
+					{
+						imdbid: clickedMovieDiv.dataset.imdbid,
+						request: "deleteMovie"
+					}
+				),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+			.then(function(response) {
+				if (response.status >= 200 && response.status < 300) {
+					if (response.status === 201) {
+						return response;
+					} else {
+						return response.json();
+					}
+				} else {
+					var error = new Error(response.statusText);
+					error.response = response;
+					throw error;
+				}
+			})
+			.then(function(res) {
+				if (typeof res.redirect === "string") {
+					window.location = res.redirect;
+				} else {
+					var deletedMovieDiv = document.querySelectorAll("[data-imdbid='" + clickedMovieDiv.dataset.imdbid + "']")[0];
+					console.log(deletedMovieDiv === clickedMovieDiv);
+					deletedMovieDiv.parentNode.removeChild(deletedMovieDiv);
 				}
 
 			});

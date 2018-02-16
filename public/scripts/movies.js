@@ -200,6 +200,7 @@ results.addEventListener("click", function(e) {
 });
 
 addButton.addEventListener("click", function() {
+	var currentButton = this;
 	fetch("/movies", {
 		method: "POST",
 		credentials: "include",
@@ -226,7 +227,7 @@ addButton.addEventListener("click", function() {
 			window.location = res.redirect;
 		} else {
 			
-			addButton.classList.add("hidden");
+			currentButton.classList.add("hidden");
 			addedButton.classList.remove("hidden");
 		}
 
