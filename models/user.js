@@ -22,7 +22,7 @@ var UserSchema = mongoose.Schema({
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "Movie"
 			},
-			imdbId: String,
+			imdbid: String,
 			watched: {
 				type: Boolean,
 				default: false
@@ -68,7 +68,7 @@ module.exports.addMovie = function(username, movie, callback) {
 		} else {
 			user.watchList.push({
 				movie: movie._id,
-				imdbId: movie.imdbid
+				imdbid: movie.imdbid
 			});
 			user.save(callback);
 		}
@@ -79,7 +79,7 @@ module.exports.addMovie = function(username, movie, callback) {
 module.exports.hasMovie = function(user, movie) {
 	var found = false;
 	user.watchList.forEach(function(listMovie) {
-		if (listMovie.imdbId === movie.imdbid) {
+		if (listMovie.imdbid === movie.imdbid) {
 			found = true;
 		}
 	});
@@ -94,4 +94,17 @@ module.exports.populateUserMovies = function(user, callback) {
 	.populate("watchList.movie")
 	.exec(callback);
 
+};
+
+module.exports.toggleWatched = function(username, imdbid, callback) {
+	User.findOne({username: username}, function(err, user) {
+		if (err) {
+			throw err;
+		}
+		var movieToToggle = user.watchList.find(function(movie) {
+			return movie.imdbid === imdbid;
+		});
+		movieToToggle.watched = movieToToggle.watched ? false : true;
+		user.save(callback);
+	});
 };

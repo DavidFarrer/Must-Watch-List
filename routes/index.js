@@ -67,8 +67,21 @@ router.get("/mylist", ensureAuthenticatedGetRoute, function(req, res) {
 	});
 });
 
+router.post("/mylist", ensureAuthenticatedPostRoute, function(req, res) {
+	// Toggle watched
+	if (req.body.request === "toggleWatched") {
+		var imdbid = req.body.imdbid;
+		User.toggleWatched(req.user.username, imdbid, function(err, user) {
+			if (err) {
+				throw err;
+			}
+			res.sendStatus(201);	
+		});
+	}
+
+});
+
 router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
-	console.log("we made it here");
 	var imdbid = req.body.imdbid;
 
 	Movie.count({imdbid: imdbid}, function(err, count) {
@@ -112,6 +125,7 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 						throw err;
 					} else {
 						console.log(user);
+						res.sendStatus(201);
 					}
 				});
 			});
@@ -119,7 +133,7 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 	});		
 	// res.locals.user.watchList.push(req.body);
 	// res.locals.user.save();
-	res.sendStatus(201);
+	
 });
 
 router.get("/mylist/movies", ensureAuthenticatedGetRoute, function(req, res) {

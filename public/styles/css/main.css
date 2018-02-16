@@ -109,17 +109,12 @@ img {
 #personalContainer {
   text-align: center; }
   #personalContainer .refineButton {
-    background-color: #e8e8e8;
-    color: black; }
+    background-color: white;
+    color: black;
+    border: 2px solid #E3B231; }
     #personalContainer .refineButton:hover {
       color: #E3B231;
       background-color: #054566; }
-    #personalContainer .refineButton#notWatched {
-      border: 2px solid #E3B231; }
-    #personalContainer .refineButton#watched {
-      border: 2px solid #b71b64; }
-    #personalContainer .refineButton#showAll {
-      border: 2px solid black; }
     #personalContainer .refineButton.selected {
       color: #E3B231;
       background-color: #054566; }
@@ -131,14 +126,28 @@ img {
       height: 64px;
       line-height: 64px;
       width: 60%;
+      position: relative;
       margin: 10px auto;
-      padding: 0 10px; }
+      padding: 0 10px;
+      border-radius: 0; }
+      #personalContainer #personalResults .panel span {
+        display: inline-block; }
       #personalContainer #personalResults .panel .btn {
-        display: none;
-        vertical-align: middle; }
-      #personalContainer #personalResults .panel:hover .btn {
-        display: block; }
+        padding: 0;
+        border-radius: 0;
+        width: 25px;
+        background-color: white; }
+      #personalContainer #personalResults .panel .delete-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 49%;
+        color: red; }
+      #personalContainer #personalResults .panel .watched-button {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 49%;
+        color: black; }
     #personalContainer #personalResults .panel-false {
       border: 2px solid #E3B231; }
-    #personalContainer #personalResults span {
-      display: inline-block; }

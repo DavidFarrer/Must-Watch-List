@@ -4,6 +4,7 @@
 	<title>Must-Watch List</title>
 	<link rel="stylesheet" type="text/css" href="/styles/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/styles/css/main.css">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Cardo:400,700" rel="stylesheet">
 </head>
 	<body>
@@ -12,17 +13,17 @@
 			<h2>Welcome <%= user.username %></h2>
 			<h4>Your Must-Watch List:</h4>
 			<div id="refineMovies">
-				<button id="notWatched" data-name="notWatched" class="refineButton selected">Not Watched</button>
-				<button id="watched" data-name="watched" class="refineButton">Watched</button>
-				<button id="showAll" data-name="showAll" class="refineButton">Show All</button>
+				<button id="notWatched" data-name="notWatched" class="refineButton selected" data-toggle="tooltip" data-placement="right" title="Show Not Watched"><i class="fas fa-eye-slash"></i></button>
+				<button id="watched" data-name="watched" class="refineButton" data-toggle="tooltip" data-placement="right" title="Show Watched"><i class="fas fa-eye"></i></button>
+				<button id="showAll" data-name="showAll" class="refineButton" data-toggle="tooltip" data-placement="right" title="Show All">All</button>
 			</div>
 
 			<div id="personalResults">
 				<% movies.forEach(function(movie) { %>
-					<div class="panel panel-<%= movie.watched %>">
+					<div class="panel panel-<%= movie.watched %> <%= movie.imdbid %>" data-imdbid="<%= movie.imdbid %>">
 						<span><%= movie.movie.title %> (<%= movie.movie.year %>)</span>
-						<button class="btn pull-right">Delete</button>
-						<button class="btn pull-right">Toggle Watched</button>
+						<button class="btn delete-button" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fas fa-minus-circle delete-icon"></i></span></button>
+						<button class="btn watched-button" data-toggle="tooltip" data-placement="right" title="Toggle Watched"><i class="fas fa-eye-slash watched-icon"></i></button>
 					</div>
 				<% }) %>
 			</div>
