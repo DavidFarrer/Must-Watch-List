@@ -20,10 +20,19 @@ var plotField = document.querySelector(".plot");
 var imdbLinkField = document.querySelector(".imdbLink");
 var addButton = document.querySelector("#add-button");
 var addedButton = document.querySelector("#already-added");
+var loadingAnimation = document.querySelector(".sk-folding-cube");
 var currentSelected;
 
-searchButton.addEventListener("click", function(e) {
+searchField.addEventListener("keyup", function(e) {
+	if (e.keyCode === 13) {
+		searchMovies(e);
+	}
+});
+searchButton.addEventListener("click", searchMovies);
+
+function searchMovies(e) {
 	e.preventDefault();
+	loadingAnimation.classList.remove("hidden");
 	searchResults = [];
 	results.innerHTML = "";
 	currentPage = 1;
@@ -43,29 +52,32 @@ searchButton.addEventListener("click", function(e) {
 			totalResults = resp.totalresults;
 			maxPage = Math.floor((totalResults - 1) / 10 + 1);
 			pushMovies(resp.results);
+			loadingAnimation.classList.add("hidden");
 			displayResults(resp.results);
 			displayProperButtons();
 		}
 	});
-});
+}
 
 nextButton.addEventListener("click", function(e) {
 	results.innerHTML = "";
+	loadingAnimation.classList.remove("hidden");
 	currentPage++;
 	hideButtons();
 	if (currentPage > maxPageVisited) {
-		console.log("New PAGE!");
 		maxPageVisited = currentPage;
 		fetch("/nextpage").then(function(res) {
+			console.log(res);
 			return res.json();
 		}).then(function(resp) {
-			pushMovies(resp.results);	
+			pushMovies(resp.results);
+			loadingAnimation.classList.add("hidden");	
 			displayResults(resp.results);
 			displayProperButtons();
 		});
 	} else {
-		console.log("BEEN HERE!");
 		var firstIndex = (currentPage - 1) * 10;
+		loadingAnimation.classList.add("hidden");
 		displayResults(searchResults.slice(firstIndex, firstIndex + 10));
 		displayProperButtons();
 	}
@@ -199,10 +211,8 @@ results.addEventListener("click", function(e) {
 	}
 });
 
-addButton.addEventListener("click", function() {
-	addButton.classList.add("hidden");
-	addedButton.classList.remove("hidden");
-	addedButton.disabled = true;
+addButton.addEventListener("click", function() {	
+	addButton.disabled = true;
 	fetch("/movies", {
 		method: "POST",
 		credentials: "include",
@@ -231,8 +241,9 @@ addButton.addEventListener("click", function() {
 		if (typeof res.redirect === "string") {
 			window.location = res.redirect;
 		} else {
-			
-			addedButton.disabled = false;
+			addButton.classList.add("hidden");
+		addedButton.classList.remove("hidden");
+			addButton.disabled = false;
 		}
 
 	});

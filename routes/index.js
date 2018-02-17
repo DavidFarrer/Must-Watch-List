@@ -37,6 +37,9 @@ router.get("/nextpage", function(req, res) {
 	currentSearch.next().then(movie => {
 		currentSearch = movie;
 		res.send(movie);
+	}).catch(err => {
+		console.log(err);
+		res.send(err);
 	});
 });
 
