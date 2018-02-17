@@ -99,7 +99,7 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 					if (err) {
 						throw err;
 					} else {
-						console.log(user);
+						res.sendStatus(201);
 					}
 				});
 			});
@@ -132,7 +132,6 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 					if (err) {
 						throw err;
 					} else {
-						console.log(user);
 						res.sendStatus(201);
 					}
 				});

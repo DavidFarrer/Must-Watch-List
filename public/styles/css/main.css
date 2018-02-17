@@ -120,8 +120,7 @@ img {
       background-color: #054566; }
   #personalContainer #personalResults {
     margin-top: 15px;
-    font-size: 2em;
-    text-align: left; }
+    font-size: 2em; }
     #personalContainer #personalResults .panel {
       height: 64px;
       line-height: 64px;
@@ -129,7 +128,9 @@ img {
       position: relative;
       margin: 10px auto;
       padding: 0 10px;
-      border-radius: 0; }
+      border-radius: 0;
+      text-align: left;
+      overflow: hidden; }
       #personalContainer #personalResults .panel span {
         display: inline-block; }
       #personalContainer #personalResults .panel .btn {
@@ -149,6 +150,8 @@ img {
         bottom: 0;
         height: 49%;
         color: black; }
+    #personalContainer #personalResults #refineLabel {
+      font-size: 0.8em; }
     #personalContainer #personalResults .panel-false {
       border: 2px solid #E3B231; }
     #personalContainer #personalResults .panel-true {

@@ -2,8 +2,9 @@ var refineButtons = document.querySelectorAll(".refineButton");
 var watchedButton = document.querySelectorAll(".watched-button");
 var watchedIcons = document.querySelectorAll(".watched-icon");
 var movieDivs = document.querySelectorAll(".panel");
+var refineLabel = document.querySelector("#refineLabel");
+var currentRefineSelection = "notWatched";
 
-console.log(refineButtons);
 
 refineButtons.forEach(function(button) {
 	button.addEventListener("click", function(e) {
@@ -11,23 +12,10 @@ refineButtons.forEach(function(button) {
 			button.classList.remove("selected");
 		});
 		button.classList.add("selected");
-		console.log(button.getAttribute("data-name"));
+		currentRefineSelection = button.getAttribute("data-name");
+		displayRefinedMovies();
 	});
 });
-
-// watchedButton.forEach(function(button) {
-// 	button.addEventListener("click", function(e) {
-// 		e.stopPropagation();
-// 		var icon = button.children[0];
-// 		if (icon.classList.contains("fa-eye")) {
-// 			icon.classList.remove("fa-eye");
-// 			icon.classList.add("fa-eye-slash");
-// 		} else {
-// 			icon.classList.add("fa-eye");
-// 			icon.classList.remove("fa-eye-slash");
-// 		}
-// 	});
-// });
 
 movieDivs.forEach(function(movieDiv) {
 	movieDiv.addEventListener("click", function(e) {
@@ -66,13 +54,17 @@ movieDivs.forEach(function(movieDiv) {
 				} else {
 					var watchedIcon = e.target;
 					if (watchedIcon.classList.contains("fa-eye-slash")) {
+						clickedMovieDiv.classList.remove("panel-false");
+						clickedMovieDiv.classList.add("panel-true");
 						watchedIcon.classList.remove("fa-eye-slash");
 						watchedIcon.classList.add("fa-eye");
 					} else {
+						clickedMovieDiv.classList.remove("panel-true");
+						clickedMovieDiv.classList.add("panel-false");
 						watchedIcon.classList.remove("fa-eye");
 						watchedIcon.classList.add("fa-eye-slash");
 					}
-					console.log(clickedMovieDiv.dataset.imdbid);
+					displayRefinedMovies();
 					e.target.classList.remove("disabled");
 				}
 
@@ -118,3 +110,26 @@ movieDivs.forEach(function(movieDiv) {
 		}
 	});
 });
+
+function displayRefinedMovies() {
+	movieDivs.forEach(function(movieDiv) {
+		if (currentRefineSelection === "showAll") {
+			refineLabel.textContent = "All Movies:";
+			movieDiv.classList.remove("hidden");
+		} else if (currentRefineSelection === "notWatched") {
+			refineLabel.textContent = "Unwatched Movies:";
+			if (movieDiv.classList.contains("panel-false")) {
+				movieDiv.classList.remove("hidden");
+			} else {
+				movieDiv.classList.add("hidden");
+			}
+		} else {
+			refineLabel.textContent = "Watched Movies:";
+			if (movieDiv.classList.contains("panel-true")) {
+				movieDiv.classList.remove("hidden");
+			} else {
+				movieDiv.classList.add("hidden");
+			}
+		}
+	});
+}

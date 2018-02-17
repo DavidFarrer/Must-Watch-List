@@ -19,11 +19,14 @@
 			</div>
 
 			<div id="personalResults">
+				<p id="refineLabel">Unwatched Movies:</p>
 				<% movies.forEach(function(movie) { %>
-					<div class="panel panel-<%= movie.watched %>" data-imdbid="<%= movie.imdbid %>">
+					<% movie.icon = movie.watched ? "fa-eye" : "fa-eye-slash" %>
+					<% movie.hidden = movie.watched ? "hidden" : "" %>
+					<div class="panel panel-<%= movie.watched %> <%= movie.hidden %>" data-imdbid="<%= movie.imdbid %>">
 						<span><%= movie.movie.title %> (<%= movie.movie.year %>)</span>
 						<button class="btn delete-button" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fas fa-minus-circle delete-icon"></i></span></button>
-						<button class="btn watched-button" data-toggle="tooltip" data-placement="right" title="Toggle Watched"><i class="fas fa-eye-slash watched-icon"></i></button>
+						<button class="btn watched-button" data-toggle="tooltip" data-placement="right" title="Toggle Watched"><i class="fas  <%= movie.icon %> watched-icon"></i></button>
 					</div>
 				<% }) %>
 			</div>

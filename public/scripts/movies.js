@@ -200,7 +200,9 @@ results.addEventListener("click", function(e) {
 });
 
 addButton.addEventListener("click", function() {
-	var currentButton = this;
+	addButton.classList.add("hidden");
+	addedButton.classList.remove("hidden");
+	addedButton.disabled = true;
 	fetch("/movies", {
 		method: "POST",
 		credentials: "include",
@@ -212,11 +214,14 @@ addButton.addEventListener("click", function() {
 	.then(function(response) {
 		if (response.status >= 200 && response.status < 300) {
 			if (response.status === 201) {
+				console.log("is 201");
 				return response;
 			} else {
+				console.log("not 201");
 				return response.json();
 			}
 		} else {
+			console.log("outside range");
 			var error = new Error(response.statusText);
 			error.response = response;
 			throw error;
@@ -227,8 +232,7 @@ addButton.addEventListener("click", function() {
 			window.location = res.redirect;
 		} else {
 			
-			currentButton.classList.add("hidden");
-			addedButton.classList.remove("hidden");
+			addedButton.disabled = false;
 		}
 
 	});
