@@ -4,6 +4,7 @@
 	<title>Must-Watch List</title>
 	<link rel="stylesheet" type="text/css" href="/styles/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/styles/css/main.css">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Cardo:400,700" rel="stylesheet">
 </head>
 	<body>
@@ -19,6 +20,7 @@
 		  	<div class="sk-cube4 sk-cube"></div>
 		  	<div class="sk-cube3 sk-cube"></div>
 			</div>
+			<p id="errorField"></p>
 			<section id="results" class="row text-center">
 			</section>
 			<div id="previous" class="btn btn-primary hidden">Previous 10</div><div id="next" class="btn btn-primary hidden">Next 10</div>
@@ -35,9 +37,10 @@
 				        	<img class="img-responsive modal-image">
 				        </div>
 				        <div class="modal-description col-xs-8">
-				        	<p class="error">Video games are not "must watch". Please select TV Shows or Movies.</p>
+				        	<p class="error"></p>
 				        	<div id="movieInfo">
 					        	<h5 class="year"></h5>
+					        	<p>Must-Watch Adds: <span class="adds"></span></p>
 					        	<p>IMDB: <span class="rating"></span></p>
 					        	<p>Actors: <span class="starring"></span></p>
 					        	<p>Director: <span class="director"></span></p>

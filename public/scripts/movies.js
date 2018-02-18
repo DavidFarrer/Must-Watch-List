@@ -13,14 +13,16 @@ var matches = document.body.matchesSelector || document.body.webkitMatchesSelect
 var yearField = document.querySelector(".year");
 var imdbRatingField = document.querySelector(".rating");
 var starringField = document.querySelector(".starring");
-var errorField = document.querySelector(".error");
+var modalErrorField = document.querySelector(".error");
 var movieInfoSection = document.querySelector("#movieInfo");
 var directorField = document.querySelector(".director");
+var addsField = document.querySelector(".adds");
 var plotField = document.querySelector(".plot");
 var imdbLinkField = document.querySelector(".imdbLink");
 var addButton = document.querySelector("#add-button");
 var addedButton = document.querySelector("#already-added");
 var loadingAnimation = document.querySelector(".sk-folding-cube");
+var errorField = document.querySelector("#errorField");
 var currentSelected;
 
 searchField.addEventListener("keyup", function(e) {
@@ -67,13 +69,18 @@ nextButton.addEventListener("click", function(e) {
 	if (currentPage > maxPageVisited) {
 		maxPageVisited = currentPage;
 		fetch("/nextpage").then(function(res) {
-			console.log(res);
+			if (res.status === "500") {
+				throw err;
+			}
 			return res.json();
 		}).then(function(resp) {
 			pushMovies(resp.results);
 			loadingAnimation.classList.add("hidden");	
 			displayResults(resp.results);
 			displayProperButtons();
+		}).catch(function(err) {
+			loadingAnimation.classList.add("hidden");
+			errorField.textContent = "An error occurred. Please reload and try again.";
 		});
 	} else {
 		var firstIndex = (currentPage - 1) * 10;
@@ -180,20 +187,23 @@ results.addEventListener("click", function(e) {
 		fetch("/movie?id=" + searchResults[indexOfMovie].imdbid, {
 			credentials: "include"
 		}).then(function(res) {
-			console.log(res);
+			if (res.status === 500) {
+				throw err;
+			}
 			return res.json();
 		}).then(function(resp) {
 			var modalDescription = document.querySelector(".description");
 			if (resp.message) {
-				errorField.classList.remove("hidden");
+				modalErrorField.classList.remove("hidden");
+				modalErrorField.textContent = "Video games are not \"must watch\". Please select TV Shows or Movies.";
 				movieInfoSection.classList.add("hidden");
 				addButton.classList.add("hidden");
 			} else {
 				currentSelected = resp;
-				console.log(currentSelected);
-				errorField.classList.add("hidden");
+				modalErrorField.classList.add("hidden");
 				movieInfoSection.classList.remove("hidden");
 				yearField.textContent = currentSelected.year;
+				addsField.textContent = currentSelected.timesAdded;
 				imdbRatingField.textContent = currentSelected.rating + " / 10";
 				starringField.textContent = currentSelected.actors;
 				directorField.textContent = currentSelected.director;
@@ -207,6 +217,12 @@ results.addEventListener("click", function(e) {
 					addedButton.classList.add("hidden");
 				}				
 			}
+		}).catch(function(err) {
+
+			modalErrorField.classList.remove("hidden");
+			modalErrorField.textContent = "An error occurred. Please refresh your page and try again.";
+			movieInfoSection.classList.add("hidden");
+			addButton.classList.add("hidden");
 		});
 	}
 });

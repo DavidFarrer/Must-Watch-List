@@ -39,19 +39,23 @@ router.get("/nextpage", function(req, res) {
 		res.send(movie);
 	}).catch(err => {
 		console.log(err);
-		res.send(err);
+		res.status(500).send("Something broke!");
 	});
 });
 
 router.get("/movie", function(req, res) {
+	console.log("id: " + req.query.id);
 	imdb.getById(req.query.id, {apiKey: config.imdbKey, timeout: 30000}).then(movie => {
 		console.log(req.user);
-		if (req.user && User.hasMovie(req.user, movie)) {
+		if (req.user && User.hasMovie(req.user, movie) && !User.isDeleted(req.user, movie.imdbid)) {
 			movie.onList = true;
 		} else {
 			movie.onList = false;
 		}
-		res.send(movie);
+		Movie.getTimesAdded(movie.imdbid, function(timesAdded) {
+			movie.timesAdded = timesAdded;
+			res.send(movie);
+		});
 	}).catch(err => {
 		console.log(err);
 		res.send(err);
@@ -94,21 +98,34 @@ router.post("/mylist", ensureAuthenticatedPostRoute, function(req, res) {
 
 router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 	var imdbid = req.body.imdbid;
+	var movieObj = {imdbid: imdbid};
 
-	Movie.count({imdbid: imdbid}, function(err, count) {
+	Movie.count(movieObj, function(err, count) {
 		if (count > 0) {
-			Movie.incrementTimesWatched(req.body.imdbid, function(err, movie) {
-				User.addMovie(req.user.username, movie, function(err, user) {
+			console.log(req.user);
+			if (User.hasMovie(req.user, movieObj)) {
+				console.log("he got movie");
+				User.addMovie(req.user.username, movieObj, function(err, user) {
 					if (err) {
 						throw err;
-					} else {
-						res.sendStatus(201);
 					}
+					res.sendStatus(201);
 				});
-			});
+			} else {
+				Movie.incrementTimesWatched(req.body.imdbid, function(err, movie) {
+					User.addMovie(req.user.username, movie, function(err, user) {
+						if (err) {
+							throw err;
+						} else {
+							res.sendStatus(201);
+						}
+					});
+				});
+			}
 		} else {
 			var title = req.body.title;
 			var imdbid = req.body.imdbid;
+			var poster = req.body.poster;
 			var year = req.body.year;
 			var rating = req.body.rating;
 			var actors = req.body.actors;
@@ -119,6 +136,7 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 			var newMovie = new Movie({
 				title: title,
 				imdbid: imdbid,
+				poster: poster,
 				year: year,
 				rating: rating,
 				actors: actors,
@@ -140,14 +158,15 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 				});
 			});
 		}
-	});		
-	// res.locals.user.watchList.push(req.body);
-	// res.locals.user.save();
+	});
 	
 });
 
-router.get("/mylist/movies", ensureAuthenticatedGetRoute, function(req, res) {
-
+router.get("/movies/top", function(req, res) {
+	Movie.getTopMovies(20, function(err, movies) {
+		console.log("top: " + movies);
+		res.render("topmovies", {movies: movies});
+	});
 });
 
 function ensureAuthenticatedPostRoute(req, res, next) {

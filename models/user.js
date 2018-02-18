@@ -26,6 +26,10 @@ var UserSchema = mongoose.Schema({
 			watched: {
 				type: Boolean,
 				default: false
+			},
+			deleted: {
+				type: Boolean,
+				default: false
 			}		
 		}
 	]
@@ -62,14 +66,25 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 
 module.exports.addMovie = function(username, movie, callback) {
 	var query = {username: username};
+	console.log("HERE: " + movie.imdbid);
 	User.findOne(query, function(err, user) {
 		if (err) {
 			throw err;
 		} else {
-			user.watchList.push({
-				movie: movie._id,
-				imdbid: movie.imdbid
-			});
+			console.log("FROM: " + movie.imdbid);
+			if (User.hasMovie(user, movie)) {
+				var movieToReadd = user.watchList.find(function(currentMovie) {
+					return currentMovie.imdbid === movie.imdbid;
+				});
+				console.log("THE MOVIE IS: " + movieToReadd);
+				movieToReadd.deleted = false;
+			} else {
+				console.log("WE PUSHING");
+				user.watchList.push({
+					movie: movie._id,
+					imdbid: movie.imdbid
+				});			
+			}
 			user.save(callback);
 		}
 	});
@@ -83,10 +98,7 @@ module.exports.hasMovie = function(user, movie) {
 			found = true;
 		}
 	});
-	if (found) {
-		return true;
-	}
-	return false;
+	return found;
 };
 
 module.exports.populateUserMovies = function(user, callback) {
@@ -114,21 +126,27 @@ module.exports.removeMovie = function(username, imdbid, callback) {
 		if (err) {
 			throw err;
 		}
-		console.log("bfore: " + user.watchList);
-		console.log(typeof imdbid);
-		console.log(imdbid);
-		console.log(removeObj(user.watchList, "imdbid", imdbid));
+		changeToDeleted(user.watchList, "imdbid", imdbid);
 		user.save(callback);
 	});
 
-	function removeObj(arr, attr, value) {
+	function changeToDeleted(arr, attr, value) {
 		var i = arr.length;
 		while (i--) {
 			if (arr[i] && arguments.length > 2 && arr[i][attr] === value) {
-				console.log("removing");
-				arr.splice(i, 1);
+				arr[i].deleted = true;
 			}
 		}
 		return arr;
+	}
+};
+
+module.exports.isDeleted = function(user, imdbid) {
+	var arr = user.watchList;
+	var i = arr.length;
+	while (i--) {
+		if (arr[i] && arr[i].imdbid === imdbid) {
+			return arr[i].deleted;
+		}
 	}
 };

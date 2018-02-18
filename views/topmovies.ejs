@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Most Watched - Must-Watch List</title>
+	<link rel="stylesheet" type="text/css" href="/styles/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/styles/css/main.css">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Cardo:400,700" rel="stylesheet">
+</head>
+	<body>
+		<div id="mostAddedContainer" class="container">
+			<% include partials/header %>
+			<% movies.forEach(function(movie, index) { %>
+				<div class="panel">
+					<a class="panelLink" href="#" data-toggle="modal" data-target="#largeModal" data-imdbid="<%= movie.imdbid %>">
+						<div class="insidePanel">
+							<span><%= index + 1 %>. <%= movie.title %></span>
+							<span class="pull-right">Times Added: <%= movie.timesAdded %></span>
+						</div>
+					</a>
+				</div>
+			<% }); %>
+		</div>
+		<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h2 class="modal-title" id="modalLabel"></h2>
+		      </div>
+		      <div class="modal-body">
+		      	<div class="row">
+			        <div class="col-xs-4">
+			        	<img class="img-responsive modal-image">
+			        </div>
+			        <div class="modal-description col-xs-8">
+			        	<p class="error"></p>
+			        	<div id="movieInfo">
+				        	<h5 class="year"></h5>
+				        	<p>Must-Watch Adds: <span class="adds"></span></p>
+				        	<p>IMDB: <span class="rating"></span></p>
+				        	<p>Actors: <span class="starring"></span></p>
+				        	<p>Director: <span class="director"></span></p>
+				        	<p>Plot: <span class="plot"></span></p>
+				        	<p><a class="imdbLink" target="_blank">IMDB Link</a></p>
+				        </div>
+			        </div>
+			      </div>
+			    </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" id="add-button" class="btn btn-primary">Add to My List</button>
+		        <a href="/mylist"><button type="button" id="already-added" class="btn btn-success hidden">See on My List</button></a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<script src="../scripts/jquery-3.2.1.min.js"></script>
+		<script src="../scripts/bootstrap.min.js"></script>
+		<script src="../scripts/topmovies.js"></script>
+	</body>
+</html>

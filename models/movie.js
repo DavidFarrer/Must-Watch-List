@@ -8,6 +8,7 @@ var MovieSchema =  mongoose.Schema({
 		type: String,
 		unique: true
 	},
+	poster: String,
 	year: Number,
 	rating: String,
 	actors: String,
@@ -32,4 +33,22 @@ module.exports.incrementTimesWatched = function(imdbid, callback) {
 		movie.timesAdded++;
 		movie.save(callback);
 	});
+};
+
+module.exports.getTimesAdded = function(imdbid, callback) {
+	Movie.findOne({imdbid: imdbid}, function(err, movie) {
+		if (movie === null) {
+			callback(0);
+		} else {
+			callback(movie.timesAdded);
+		}
+
+	});
+};
+
+module.exports.getTopMovies = function(number, callback) {
+	Movie.find()
+		.sort("-timesAdded")
+		.limit(number)
+		.exec(callback);
 };

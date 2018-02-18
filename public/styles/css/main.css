@@ -19,6 +19,8 @@ nav {
     color: #E3B231;
     font-weight: 700;
     text-shadow: 2px 2px 2px #A12400; }
+  nav .fa-align-justify {
+    color: #E3B231; }
   nav ul {
     padding: 0;
     margin: 0; }
@@ -57,6 +59,10 @@ input {
 
 img {
   max-height: 500px; }
+
+#errorField {
+  text-align: center;
+  margin-top: 15px; }
 
 #results {
   display: flex;
@@ -182,7 +188,8 @@ img {
       font-weight: normal; }
 
 #previous, #next {
-  margin: 10px;
+  margin-top: 15px;
+  margin-bottom: 40px;
   background-color: #B3000F;
   border: none; }
 
@@ -239,3 +246,17 @@ img {
       border: 2px solid #E3B231; }
     #personalContainer #personalResults .panel-true {
       border: 2px solid #054566; }
+
+#mostAddedContainer .panelLink {
+  color: inherit;
+  text-decoration: inherit; }
+
+#mostAddedContainer .panel {
+  width: 70%;
+  margin: 10px auto;
+  font-size: 1.5em;
+  border: 2px solid transparent; }
+  #mostAddedContainer .panel:hover {
+    border: 2px solid #E3B231; }
+  #mostAddedContainer .panel .insidePanel {
+    padding: 10px; }
