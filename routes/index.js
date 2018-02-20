@@ -22,7 +22,7 @@ router.get("/searching", function(req, res) {
 	imdb.search({
 		title: req.query.search
 	}, {
-		apiKey: config.imdbKey,
+		apiKey: process.env.IMDB_API_KEY,
 		timeout: 30000
 	}).then(movie => {
 		currentSearch = movie;
