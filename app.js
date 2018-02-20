@@ -9,7 +9,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var mongo = require("mongodb");
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/mustwatch");
+mongoose.connect(process.env.MONGOLAB_URI);
 var db = mongoose.connection;
 var PORT = process.env.PORT || 3000;
 

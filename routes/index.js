@@ -46,7 +46,7 @@ router.get("/nextpage", function(req, res) {
 
 router.get("/movie", function(req, res) {
 	console.log("id: " + req.query.id);
-	imdb.getById(req.query.id, {apiKey: config.imdbKey, timeout: 30000}).then(movie => {
+	imdb.getById(req.query.id, {apiKey: process.env.IMDB_API_KEY, timeout: 30000}).then(movie => {
 		console.log(req.user);
 		if (req.user && User.hasMovie(req.user, movie) && !User.isDeleted(req.user, movie.imdbid)) {
 			movie.onList = true;
