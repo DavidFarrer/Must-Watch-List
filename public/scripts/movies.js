@@ -159,9 +159,12 @@ function displayResults(resultsObj) {
 }
 
 function displayProperButtons() {
-	if (currentPage === 1) {
+	if (currentPage === 1 && currentPage < maxPage) {
 		previousButton.classList.add("hidden");
 		nextButton.classList.remove("hidden");
+	} else if (currentPage === 1 && currentPage === maxPage) {
+		previousButton.classList.add("hidden");
+		nextButton.classList.add("hidden");
 	} else if (currentPage > 1 && currentPage < maxPage) {
 		previousButton.classList.remove("hidden");
 		nextButton.classList.remove("hidden");
