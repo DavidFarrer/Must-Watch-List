@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+var sanitize = require("mongo-sanitize");
+var json = require("body-parser").json;
 
 var User = require("../models/user");
 
@@ -16,11 +18,12 @@ router.get("/login", function(req, res) {
 });
 
 // Register User
-router.post("/register", function(req, res) {
+router.post("/register", json(), cleanBody, function(req, res) {
 	var username = req.body.username;
 	var email = req.body.email;
 	var password = req.body.password1;
 	var password2 = req.body.password2;
+	console.log(username);
 
 	// Validation
 	req.checkBody("password1", "Password is required").notEmpty();
@@ -87,7 +90,7 @@ passport.deserializeUser(function(id, done) {
 	});
 });
 
-router.post("/login",
+router.post("/login", json(), cleanBody,
 	passport.authenticate("local", {successRedirect:"/movies", failureRedirect:"/users/login", failureFlash: true}),
 	function(req, res) {
 		res.redirect("/");
@@ -101,3 +104,8 @@ router.get("/logout", function(req, res) {
 
 
 module.exports = router;
+
+function cleanBody(req, res, next) {
+  req.body = sanitize(req.body);
+  next();
+}

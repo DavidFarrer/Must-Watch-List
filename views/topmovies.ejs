@@ -10,6 +10,7 @@
 	<body>
 		<div id="mostAddedContainer" class="container">
 			<% include partials/header %>
+			<h2>Most Added Movies:</h2>
 			<% movies.forEach(function(movie, index) { %>
 				<div class="panel">
 					<a class="panelLink" href="#" data-toggle="modal" data-target="#largeModal" data-imdbid="<%= movie.imdbid %>">

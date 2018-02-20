@@ -33,32 +33,49 @@ searchField.addEventListener("keyup", function(e) {
 searchButton.addEventListener("click", searchMovies);
 
 function searchMovies(e) {
-	e.preventDefault();
-	loadingAnimation.classList.remove("hidden");
-	searchResults = [];
-	results.innerHTML = "";
-	currentPage = 1;
-	maxPageVisited = 1;
-	maxPage = 1;
-	totalResults = 0;
-	previousButton.classList.add("hidden");
-	nextButton.classList.add("hidden");
+	if (searchField.value !== "") {
+		e.preventDefault();
+		errorField.classList.add("hidden");
+		loadingAnimation.classList.remove("hidden");
+		searchResults = [];
+		results.innerHTML = "";
+		currentPage = 1;
+		maxPageVisited = 1;
+		maxPage = 1;
+		totalResults = 0;
+		previousButton.classList.add("hidden");
+		nextButton.classList.add("hidden");
 
-	fetch("/searching?search=" + searchField.value).then(function(res) {
-		return res.json();
-	}).then(function(resp) {
-		console.log(resp);
-		if (!resp.hasOwnProperty("results")) {
-			results.textContent = "The search \"" + searchField.value + "\" returned no results!";
-		} else {
-			totalResults = resp.totalresults;
-			maxPage = Math.floor((totalResults - 1) / 10 + 1);
-			pushMovies(resp.results);
+		fetch("/searching?search=" + searchField.value)
+		.then(function(res) {
+			if (res.status === 500) {
+				throw err;
+			} else {
+				return res.json();
+			}
+		}).then(function(resp) {
+			if (!resp.hasOwnProperty("results")) {
+				if (resp.message.indexOf("Error") !== -1) {
+					errorField.textContent = "Server timed out. Please try again.";
+				} else {
+					errorField.textContent = "The search \"" + searchField.value + "\" returned no results!";
+				}
+				loadingAnimation.classList.add("hidden");
+				errorField.classList.remove("hidden");
+			} else {
+				totalResults = resp.totalresults;
+				maxPage = Math.floor((totalResults - 1) / 10 + 1);
+				pushMovies(resp.results);
+				loadingAnimation.classList.add("hidden");
+				displayResults(resp.results);
+				displayProperButtons();
+			}
+		}).catch(function(err) {
 			loadingAnimation.classList.add("hidden");
-			displayResults(resp.results);
-			displayProperButtons();
-		}
-	});
+			errorField.textContent = "Server timed out. Please try again.";
+			errorField.classList.remove("hidden");
+		});
+	}
 }
 
 nextButton.addEventListener("click", function(e) {
@@ -80,6 +97,7 @@ nextButton.addEventListener("click", function(e) {
 			displayProperButtons();
 		}).catch(function(err) {
 			loadingAnimation.classList.add("hidden");
+			errorField.classList.remove("hidden");
 			errorField.textContent = "An error occurred. Please reload and try again.";
 		});
 	} else {
@@ -92,7 +110,6 @@ nextButton.addEventListener("click", function(e) {
 });
 
 previousButton.addEventListener("click", function(e) {
-	console.log("BEEN HERE!");
 	results.innerHTML = "";
 	currentPage--;
 	hideButtons();
@@ -102,7 +119,6 @@ previousButton.addEventListener("click", function(e) {
 });
 
 function displayResults(resultsObj) {
-	console.log(resultsObj);
 	resultsObj.forEach(function(movie, index) {
 		var boxDiv = document.createElement("div");
 		var innerDiv = document.createElement("div");
@@ -153,11 +169,6 @@ function displayProperButtons() {
 		nextButton.classList.add("hidden");
 		previousButton.classList.remove("hidden");
 	}
-}
-
-function showPages() {
-	console.log("Current: " + currentPage);
-	console.log("Max: " + maxPage);
 }
 
 function pushMovies(resultsObj) {
@@ -240,14 +251,11 @@ addButton.addEventListener("click", function() {
 	.then(function(response) {
 		if (response.status >= 200 && response.status < 300) {
 			if (response.status === 201) {
-				console.log("is 201");
 				return response;
 			} else {
-				console.log("not 201");
 				return response.json();
 			}
 		} else {
-			console.log("outside range");
 			var error = new Error(response.statusText);
 			error.response = response;
 			throw error;

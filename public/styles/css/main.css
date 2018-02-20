@@ -12,13 +12,17 @@ html {
 nav {
   background-color: #054566;
   text-align: left; }
-  nav .navbar-brand {
-    width: 300px; }
+  nav #logo {
+    height: 40px;
+    padding: 0 10px 10px 10px;
+    display: inline-block; }
   nav .navbar-brand {
     font-size: 2.3em;
     color: #E3B231;
     font-weight: 700;
-    text-shadow: 2px 2px 2px #A12400; }
+    text-shadow: 2px 2px 2px #A12400;
+    padding: 0;
+    line-height: 50px; }
   nav .fa-align-justify {
     color: #E3B231; }
   nav ul {
@@ -55,7 +59,8 @@ body, html {
   text-align: center; }
 
 input {
-  width: 300px; }
+  width: 300px;
+  border: 1px solid #054566; }
 
 img {
   max-height: 500px; }
@@ -63,6 +68,12 @@ img {
 #errorField {
   text-align: center;
   margin-top: 15px; }
+
+#searchButton {
+  border: 1px solid #E3B231;
+  color: #E3B231;
+  background-color: #054566;
+  font-weight: 800; }
 
 #results {
   display: flex;
@@ -250,6 +261,9 @@ img {
 #mostAddedContainer .panelLink {
   color: inherit;
   text-decoration: inherit; }
+
+#mostAddedContainer h2 {
+  text-align: center; }
 
 #mostAddedContainer .panel {
   width: 70%;

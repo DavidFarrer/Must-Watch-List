@@ -30,6 +30,7 @@ router.get("/searching", function(req, res) {
 		res.send(movie);
 	}).catch(err => {
 		console.log(err);
+		res.send(err);
 	});
 });
 
@@ -58,7 +59,7 @@ router.get("/movie", function(req, res) {
 		});
 	}).catch(err => {
 		console.log(err);
-		res.send(err);
+		res.status(500).send(err);
 	});
 
 });

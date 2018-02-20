@@ -3,8 +3,11 @@ var watchedButton = document.querySelectorAll(".watched-button");
 var watchedIcons = document.querySelectorAll(".watched-icon");
 var movieDivs = document.querySelectorAll(".panel");
 var refineLabel = document.querySelector("#refineLabel");
+var personalResults = document.querySelector("#personalResults");
 var currentRefineSelection = "notWatched";
 
+
+window.addEventListener("load", displayRefinedMovies);
 
 refineButtons.forEach(function(button) {
 	button.addEventListener("click", function(e) {
@@ -102,7 +105,6 @@ movieDivs.forEach(function(movieDiv) {
 					window.location = res.redirect;
 				} else {
 					var deletedMovieDiv = document.querySelectorAll("[data-imdbid='" + clickedMovieDiv.dataset.imdbid + "']")[0];
-					console.log(deletedMovieDiv === clickedMovieDiv);
 					deletedMovieDiv.parentNode.removeChild(deletedMovieDiv);
 				}
 
@@ -132,4 +134,13 @@ function displayRefinedMovies() {
 			}
 		}
 	});
+	if (personalResults.querySelectorAll(".hidden").length === movieDivs.length) {
+		if (currentRefineSelection === "showAll") {
+			refineLabel.textContent = "Your list is empty.";
+		} else if (currentRefineSelection === "notWatched") {
+			refineLabel.textContent = "You have no unwatched movies.";
+		} else {
+			refineLabel.textContent = "You have no watched movies.";
+		}
+	}
 }

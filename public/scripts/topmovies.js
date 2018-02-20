@@ -14,6 +14,8 @@ var modalImage = document.querySelector(".modal-image");
 var addedButton = document.querySelector("#already-added");
 var modalErrorField = document.querySelector(".error");
 
+
+// Populate modal for the top movies when clicked.
 movieLinks.forEach(function(movieLink) {
 	movieLink.addEventListener("click", function(e) {
 		var imdbid = movieLink.dataset.imdbid;
@@ -26,12 +28,12 @@ movieLinks.forEach(function(movieLink) {
 			return res.json();
 		}).then(function(resp) {
 			var modalDescription = document.querySelector(".description");
-			if (resp.message) {
+			if (resp.message) { //if there's an error
 				modalErrorField.classList.remove("hidden");
 				modalErrorField.textContent = "Video games are not \"must watch\". Please select TV Shows or Movies.";
 				movieInfoSection.classList.add("hidden");
 				addButton.classList.add("hidden");
-			} else {
+			} else { //no error
 				currentSelected = resp;
 				modalErrorField.classList.add("hidden");
 				movieInfoSection.classList.remove("hidden");
@@ -49,7 +51,7 @@ movieLinks.forEach(function(movieLink) {
 				directorField.textContent = currentSelected.director;
 				plotField.textContent = currentSelected.plot;
 				imdbLinkField.setAttribute("href", currentSelected.imdburl);
-				if (currentSelected.onList) {
+				if (currentSelected.onList) { // if the movie is on the user's list remove add button and put See on my list button
 					addButton.classList.add("hidden");
 					addedButton.classList.remove("hidden");
 				} else {
@@ -58,7 +60,6 @@ movieLinks.forEach(function(movieLink) {
 				}				
 			}
 		}).catch(function(err) {
-			console.log(err);
 			modalErrorField.classList.remove("hidden");
 			modalErrorField.textContent = "An error occurred. Please refresh your page and try again.";
 			movieInfoSection.classList.add("hidden");
