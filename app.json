@@ -1,0 +1,7 @@
+{
+  "name": "Must-Watch List",
+  "description": "Movie list creator",
+  "repository": "https://github.com/DavidFarrer/Must-Watch-List",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}

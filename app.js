@@ -11,6 +11,7 @@ var mongo = require("mongodb");
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/mustwatch");
 var db = mongoose.connection;
+var PORT = process.env.PORT || 3000;
 
 var indexRoutes = require("./routes/index");
 var userRoutes = require("./routes/users");
@@ -74,4 +75,4 @@ app.use(function(req, res, next) {
 app.use("/", indexRoutes);
 app.use("/users", userRoutes);
 
-app.listen(3000, () => console.log("Listening on port 3000"));
+app.listen(PORT, () => console.log("Listening on " + PORT));
