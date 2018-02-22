@@ -7,7 +7,8 @@ html {
 .container {
   background-color: #e8e8e8;
   min-height: 100vh;
-  padding-top: 60px; }
+  padding-top: 60px;
+  padding-bottom: 40px; }
 
 nav {
   background-color: #054566;
