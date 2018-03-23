@@ -203,7 +203,8 @@ img {
   margin-top: 15px;
   margin-bottom: 40px;
   background-color: #B3000F;
-  border: none; }
+  border: none;
+  margin-right: 10px; }
 
 .hidden {
   display: none; }
