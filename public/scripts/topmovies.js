@@ -67,3 +67,38 @@ movieLinks.forEach(function(movieLink) {
 		});
 	});
 });
+
+addButton.addEventListener("click", function() {	
+	addButton.disabled = true;
+	fetch("/movies", {
+		method: "POST",
+		credentials: "include",
+		body: JSON.stringify(currentSelected),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	.then(function(response) {
+		if (response.status >= 200 && response.status < 300) {
+			if (response.status === 201) {
+				return response;
+			} else {
+				return response.json();
+			}
+		} else {
+			var error = new Error(response.statusText);
+			error.response = response;
+			throw error;
+		}
+	})
+	.then(function(res) {
+		if (typeof res.redirect === "string") {
+			window.location = res.redirect;
+		} else {
+			addButton.classList.add("hidden");
+		addedButton.classList.remove("hidden");
+			addButton.disabled = false;
+		}
+
+	});
+});

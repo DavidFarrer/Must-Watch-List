@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/mustwatch");
+mongoose.connect(process.env.MONGOLAB_URI);
 
 var MovieSchema =  mongoose.Schema({
 	title: String,

@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
 
-mongoose.connect("mongodb://localhost/mustwatch");
+mongoose.connect(process.env.MONGOLAB_URI);
 
 // User Schema
 var UserSchema = mongoose.Schema({

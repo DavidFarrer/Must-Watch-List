@@ -4,6 +4,9 @@ html {
 *, *:before, *:after {
   box-sizing: inherit; }
 
+.container-fluid {
+  margin: 0 8px; }
+
 .container {
   background-color: #e8e8e8;
   min-height: 100vh;
