@@ -102,9 +102,7 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 
 	Movie.count(movieObj, function(err, count) {
 		if (count > 0) {
-			console.log(req.user);
 			if (User.hasMovie(req.user, movieObj)) {
-				console.log("he got movie");
 				User.addMovie(req.user.username, movieObj, function(err, user) {
 					if (err) {
 						throw err;
@@ -164,22 +162,21 @@ router.post("/movies", ensureAuthenticatedPostRoute, function(req, res) {
 
 router.get("/movies/top", function(req, res) {
 	Movie.getTopMovies(20, function(err, movies) {
-		console.log("top: " + movies);
 		res.render("topmovies", {movies: movies});
 	});
 });
 
+
+// Post Route Middleware
 function ensureAuthenticatedPostRoute(req, res, next) {
 	if (req.isAuthenticated()) {
-		console.log(req.user);
 		return next();
 	}
-	console.log("didnt make it");
 	req.flash("error_msg", "You must log in first");
 	res.send({redirect: "/users/login"});
-	
 }
 
+// Get Route Middleware
 function ensureAuthenticatedGetRoute(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();

@@ -66,20 +66,16 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 
 module.exports.addMovie = function(username, movie, callback) {
 	var query = {username: username};
-	console.log("HERE: " + movie.imdbid);
 	User.findOne(query, function(err, user) {
 		if (err) {
 			throw err;
 		} else {
-			console.log("FROM: " + movie.imdbid);
 			if (User.hasMovie(user, movie)) {
 				var movieToReadd = user.watchList.find(function(currentMovie) {
 					return currentMovie.imdbid === movie.imdbid;
 				});
-				console.log("THE MOVIE IS: " + movieToReadd);
 				movieToReadd.deleted = false;
 			} else {
-				console.log("WE PUSHING");
 				user.watchList.push({
 					movie: movie._id,
 					imdbid: movie.imdbid

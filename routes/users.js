@@ -23,7 +23,6 @@ router.post("/register", json(), cleanBody, function(req, res) {
 	var email = req.body.email;
 	var password = req.body.password1;
 	var password2 = req.body.password2;
-	console.log(username);
 
 	// Validation
 	req.checkBody("password1", "Password is required").notEmpty();
@@ -49,7 +48,6 @@ router.post("/register", json(), cleanBody, function(req, res) {
 			if (err) {
 				throw err;
 			}
-			console.log(user);
 		});
 
 		req.flash("success_msg", "You are registered and can now login");
